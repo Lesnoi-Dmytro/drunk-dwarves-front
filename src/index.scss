@@ -1,0 +1,19 @@
+@use '@styles/mixins' as mixins;
+@use '@styles/placeholders' as *;
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  @include mixins.flex-column();
+  min-height: 100vh;
+  width: 100%;
+}
+
+#root {
+  @extend %flex-grow;
+  @include mixins.flex-column();
+}

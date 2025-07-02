@@ -1,0 +1,74 @@
+@use '@styles/variables.scss' as vars;
+@use 'sass:map';
+
+@mixin flex-column($align: start, $justify: flex-start) {
+  display: flex;
+  flex-direction: column;
+  align-items: $align;
+  justify-content: $justify;
+}
+
+@mixin flex-row($align: start, $justify: flex-start) {
+  display: flex;
+  flex-direction: row;
+  align-items: $align;
+  justify-content: $justify;
+}
+
+@mixin space-x($gap: vars.$container-gap) {
+  > :not(:first-child) {
+    margin-left: $gap;
+  }
+}
+
+@mixin space-y($gap: vars.$container-gap) {
+  > :not(:first-child) {
+    margin-top: $gap;
+  }
+}
+
+@mixin icon-size($size) {
+  width: $size;
+  height: $size;
+  font-size: $size;
+  line-height: 1;
+}
+
+@mixin text-ellipsis-lines($lines) {
+  display: -webkit-box;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  -webkit-line-clamp: $lines;
+  line-clamp: $lines;
+  -webkit-box-orient: vertical;
+}
+
+@mixin sm() {
+  @media (min-width: map.get(vars.$breakpoints, 'sm')) {
+    @content;
+  }
+}
+
+@mixin md() {
+  @media (min-width: map.get(vars.$breakpoints, 'md')) {
+    @content;
+  }
+}
+
+@mixin lg() {
+  @media (min-width: map.get(vars.$breakpoints, 'lg')) {
+    @content;
+  }
+}
+
+@mixin xl() {
+  @media (min-width: map.get(vars.$breakpoints, 'xl')) {
+    @content;
+  }
+}
+
+@mixin _2xl() {
+  @media (min-width: map.get(vars.$breakpoints, '2xl')) {
+    @content;
+  }
+}
