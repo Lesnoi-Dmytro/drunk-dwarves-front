@@ -1,5 +1,5 @@
+import { CssBaseline } from '@mui/material';
 import { purple } from '@mui/material/colors';
-import CssBaseline from '@mui/material/CssBaseline';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 
 const theme = createTheme({
@@ -9,12 +9,20 @@ const theme = createTheme({
         primary: {
           main: purple[900],
         },
+        background: {
+          default: '#251535',
+          paper: '#352055',
+        },
       },
     },
     light: {
       palette: {
         primary: {
           main: purple[600],
+        },
+        background: {
+          default: '#604b70',
+          paper: '#8e6bac',
         },
       },
     },
@@ -35,7 +43,7 @@ interface Props {
 const MuiConfig: React.FC<Props> = ({ children }: Props) => {
   return (
     <ThemeProvider theme={theme} noSsr defaultMode="system">
-      <CssBaseline />
+      <CssBaseline enableColorScheme />
       {children}
     </ThemeProvider>
   );

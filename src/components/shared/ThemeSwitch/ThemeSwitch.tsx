@@ -1,13 +1,36 @@
-import { themeOptions } from '@/components/shared/ThemeSwitch/helpers';
+import {
+  darkPreferedMatcher,
+  preferedThemeEventListener,
+  removeDarkDocumentTheme,
+  setDarkDocumentTheme,
+  themeOptions,
+} from '@/components/shared/ThemeSwitch/helpers';
 import { Box, IconButton, Menu, MenuItem, useColorScheme } from '@mui/material';
-import React, { useMemo, useState, type MouseEvent } from 'react';
+import React, { useEffect, useMemo, useState, type MouseEvent } from 'react';
 
 const ThemeSwitch = React.memo(() => {
   const { mode, setMode } = useColorScheme();
-  const selecteTheme = useMemo(
-    () => themeOptions.find((option) => option.value === mode)!,
-    [mode],
-  );
+  const selecteTheme = useMemo(() => themeOptions.find((option) => option.value === mode)!, [mode]);
+
+  useEffect(() => {
+    if (mode === 'system') {
+      if (darkPreferedMatcher.matches) {
+        setDarkDocumentTheme();
+      } else {
+        removeDarkDocumentTheme();
+      }
+      darkPreferedMatcher.addEventListener('change', preferedThemeEventListener);
+
+      return;
+    }
+    darkPreferedMatcher.removeEventListener('change', preferedThemeEventListener);
+
+    if (mode === 'dark') {
+      setDarkDocumentTheme();
+    } else if (mode === 'light') {
+      removeDarkDocumentTheme();
+    }
+  }, [mode]);
 
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
