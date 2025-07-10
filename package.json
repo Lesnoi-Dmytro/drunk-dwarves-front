@@ -8,10 +8,8 @@
     "build": "tsc -b && vite build",
     "lint": "eslint .",
     "preview": "vite preview",
-    "generate": "ts-node ./.scripts/generator/index.ts",
-    "g": "npm run generate",
-    "generate-component": "ts-node ./.scripts/generator/component-generator/index.ts",
-    "gc": "npm run generate-component"
+    "generate-element": "ts-node ./.scripts/generator/element-generator/index.ts",
+    "ge": "npm run generate-element"
   },
   "dependencies": {
     "@emotion/react": "^11.14.0",

@@ -10,26 +10,36 @@ export const ComponentOptions = {
   MEMO: 'Memo',
 } as const;
 
-export type ComponentOptionsType =
-  (typeof ComponentOptions)[keyof typeof ComponentOptions];
+export type ComponentOptionsType = (typeof ComponentOptions)[keyof typeof ComponentOptions];
 
-const checkedOptions: ComponentOptionsType[] = [
-  ComponentOptions.PROPS,
-  ComponentOptions.STYLES,
-];
+export const ElementTypes = {
+  PAGE: 'Page',
+  COMPONENT: 'Component',
+} as const;
 
-export async function generateComponent() {
-  const { componentName } = await inquirer.prompt([
+export async function generateElement() {
+  const { type, elementName } = await inquirer.prompt([
+    {
+      type: 'list',
+      message: 'Element type:',
+      name: 'type',
+      choices: Object.entries(ElementTypes).map(([name, value]) => ({ name, value })),
+    },
     {
       type: 'input',
-      message: 'Component name:',
-      name: 'componentName',
+      message: 'Element name:',
+      name: 'elementName',
     },
   ]);
 
-  if (!/^[A-Z]/.test(componentName)) {
-    console.log('Component should start with an upper case letter');
+  if (!/^[A-Z]/.test(elementName)) {
+    console.log('Element name should start with an upper case letter');
     return;
+  }
+
+  const checkedOptions: ComponentOptionsType[] = [ComponentOptions.STYLES];
+  if (type === ElementTypes.COMPONENT) {
+    checkedOptions.unshift(ComponentOptions.PROPS);
   }
 
   const { options } = await inquirer.prompt([
@@ -46,7 +56,8 @@ export async function generateComponent() {
   ]);
 
   const rootDir = path.resolve(path.dirname('../'));
-  let shownPath = path.join('src', 'components');
+  let shownPath =
+    type === ElementTypes.PAGE ? path.join('src', 'pages') : path.join('src', 'components');
   let folderPath = path.join(rootDir, shownPath);
 
   let choice: string;
@@ -59,10 +70,10 @@ export async function generateComponent() {
     const { pathPart } = await inquirer.prompt([
       {
         type: 'list',
-        message: `Component folder: ${shownPath}`,
+        message: `Element folder: ${shownPath}`,
         name: 'pathPart',
         choices: [
-          { name: '[Create component]', value: '' },
+          { name: '[Create element]', value: '' },
           ...folders.map((folder) => ({ name: folder, value: folder })),
         ],
       },
@@ -73,13 +84,13 @@ export async function generateComponent() {
     choice = pathPart;
   } while (choice);
 
-  shownPath = path.join(shownPath, componentName);
-  folderPath = path.join(folderPath, componentName);
+  shownPath = path.join(shownPath, elementName);
+  folderPath = path.join(folderPath, elementName);
 
-  console.log('Component path:', shownPath);
-  createComponent(folderPath, componentName, options);
+  console.log('Element path:', shownPath);
+  createComponent(folderPath, elementName, options);
 }
 
 if (isInvokedDirectly(import.meta)) {
-  generateComponent();
+  generateElement();
 }
