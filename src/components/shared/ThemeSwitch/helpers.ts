@@ -27,3 +27,23 @@ export const themeOptions: ThemeOption[] = [
     Icon: Brightness4Icon,
   },
 ];
+
+export function setDarkDocumentTheme() {
+  document.body.classList.add('dark');
+}
+
+export function removeDarkDocumentTheme() {
+  document.body.classList.remove('dark');
+}
+
+export const darkPreferedMatcher = window.matchMedia(
+  '(prefers-color-scheme: dark)',
+);
+
+export function preferedThemeEventListener(event: MediaQueryListEvent) {
+  if (event.matches) {
+    setDarkDocumentTheme();
+  } else {
+    removeDarkDocumentTheme();
+  }
+}
